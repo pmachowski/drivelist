@@ -4,11 +4,11 @@ function get_key {
   grep "$1" | awk -F "  +" '{ print $3 }'
 }
 
-function get_until_paren {
-  awk 'match($0, "\\(|$"){ print substr($0, 0, RSTART - 1) }'
+function get_identifier {
+  awk 'NF>1{print $NF}'
 }
 
-DISKS="`diskutil list | grep '^\/' | get_until_paren`"
+DISKS="`diskutil list | grep '\d:' | get_identifier`"
 
 for disk in $DISKS; do
   diskinfo="`diskutil info $disk`"
